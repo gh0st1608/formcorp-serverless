@@ -37,3 +37,17 @@ module "site" {
   aliases         = var.aliases
   tags            = local.common_tags
 }
+
+module "iam" {
+  source = "./modules/iam"
+}
+
+module "codebuild" {
+  source = "./modules/codebuild"
+  repository = var.repository_form
+  codebuild_service_role_arn = module.iam.codebuild_service_role_arn
+}
+
+module "s3" {
+  source = "./modules/s3"
+}

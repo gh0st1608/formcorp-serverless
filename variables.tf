@@ -45,3 +45,8 @@ variable "aliases" {
   type = list(string)
   default     = []
 }
+
+variable "repository_form" {
+  description = "Repositorio del proyecto"
+  type        = string
+}
