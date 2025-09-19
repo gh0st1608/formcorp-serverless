@@ -44,7 +44,7 @@ resource "aws_cloudfront_distribution" "this" {
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = "index.html"
-  aliases             = [var.fqdn]
+  aliases = var.aliases
 
   origin {
     origin_id   = "s3-${aws_s3_bucket.site.id}"
@@ -104,4 +104,6 @@ resource "aws_cloudfront_distribution" "this" {
     aws_s3_bucket_policy.policy
   ]
 }
+
+
 

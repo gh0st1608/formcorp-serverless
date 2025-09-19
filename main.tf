@@ -34,5 +34,6 @@ module "site" {
   source          = "./modules/site"
   fqdn            = local.fqdn
   certificate_arn = var.certificate_arn
+  aliases         = var.aliases
   tags            = local.common_tags
 }

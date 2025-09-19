@@ -39,3 +39,9 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "aliases" {
+  description = "Lista de subdominios/dominios adicionales para el certificado"
+  type = list(string)
+  default     = []
+}

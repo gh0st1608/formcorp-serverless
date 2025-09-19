@@ -96,3 +96,19 @@ Los componentes se gestionan con **Terraform** y se integran con un dominio exte
   ```bash
   nslookup forms.empresa.com
 
+
+## 🚦 Flujo de despliegue completo
+
+1. **Inicializar y aplicar infraestructura con Terraform**  
+   ```bash
+   terraform init
+   terraform apply
+
+2. **Subir los archivos del frontend al bucket S3**  
+   ```aws s3 sync ./frontend s3://<nombre-del-bucket>
+
+3. **Esperar propagación de CloudFront**  
+   Puede demorar aproximadamente 10–15 minutos en reflejar los cambios.
+
+4. **Acceder al dominio personalizado**
+   https://forms.empresa.com
