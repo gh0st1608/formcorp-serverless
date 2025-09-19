@@ -11,3 +11,4 @@ modules/.build/
 secrets.yaml
 *.tfvars
 
+api/design/node_modules
