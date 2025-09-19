@@ -12,3 +12,4 @@ secrets.yaml
 *.tfvars
 
 api/design/node_modules
+api/design/dist
