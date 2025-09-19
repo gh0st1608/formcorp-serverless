@@ -1,0 +1,16 @@
+description: Entidad para crear un reclamo
+required: true
+content:
+  application/json:
+    schema:
+      $ref: ../schemas/model_request/CreateClaimReq.yaml
+    examples:
+      Caso-Prueba-01:
+        summary: Caso Prueba 01
+        value:
+          Data:
+            Claim:
+              name: 'Omar Alex'
+              lastname: 'Huerta Condori'
+              case: 'Error en entrega'
+              email : 'xxxyyyzzz@gmail.com'

@@ -1,0 +1,25 @@
+type: object
+description: Entidad permite crear un producto
+properties:
+  Data:
+    type: object
+    properties:
+      Product:
+        required:
+          - name
+          - lastname
+          - case
+          - email
+        type: object
+        properties:
+          name:
+            $ref: ../attributes/claim/name.yaml
+          lastname:
+            $ref: ../attributes/claim/lastname.yaml
+          case:
+            $ref: ../attributes/claim/case.yaml
+          email:
+            $ref: ../attributes/claim/email.yaml
+
+
+          
