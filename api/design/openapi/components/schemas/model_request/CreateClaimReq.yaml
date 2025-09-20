@@ -8,7 +8,7 @@ properties:
         required:
           - name
           - lastname
-          - case
+          - caseDescription
           - email
           - tipoSolicitud
         type: object
@@ -17,7 +17,7 @@ properties:
             $ref: ../attributes/claim/name.yaml
           lastname:
             $ref: ../attributes/claim/lastname.yaml
-          case:
+          caseDescription:
             $ref: ../attributes/claim/case.yaml
           email:
             $ref: ../attributes/claim/email.yaml

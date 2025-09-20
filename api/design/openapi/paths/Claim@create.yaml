@@ -1,6 +1,7 @@
 parameters:
   - $ref: ../components/parameters/Channel.yaml
   - $ref: ../components/parameters/ApiKey.yaml
+  - $ref: ../components/parameters/ClientDomain.yaml
 
 post:
   summary: Create Claim
