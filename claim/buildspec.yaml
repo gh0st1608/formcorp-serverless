@@ -2,7 +2,7 @@ version: 0.2
 
 env:
   variables:
-    S3_BUCKET: cargocom-claim-source-code
+    S3_BUCKET: cargocom-claim-source
     ZIP_KEY: claim/lambda.zip
     LAMBDA_NAME: cargocom-claim-service
 
