@@ -13,8 +13,12 @@ output "api_invoke_url" {
   description = "API Gateway invoke base URL (stage prod)"
 }
 
-output "dynamodb_table_name" {
-  value = module.dynamodb.table_name
+output "dynamodb_table_names" {
+  value = { for k, m in module.dynamodb : k => m.table_name }
+}
+
+output "dynamodb_table_arns" {
+  value = { for k, m in module.dynamodb : k => m.table_arn }
 }
 
 output "lambda_function_name" {
