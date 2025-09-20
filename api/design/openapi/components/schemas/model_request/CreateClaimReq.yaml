@@ -4,7 +4,7 @@ properties:
   Data:
     type: object
     properties:
-      Product:
+      Claim:
         required:
           - name
           - lastname
