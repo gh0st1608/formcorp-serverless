@@ -32,7 +32,7 @@ resource "aws_lambda_permission" "forms_apgw" {
   action        = "lambda:InvokeFunction"
   function_name = var.lambda_name
   principal     = "apigateway.amazonaws.com"
-  source_arn = "${aws_api_gateway_rest_api.this.execution_arn}/${var.aws_env}/POST/claim"
+  source_arn    = "${aws_api_gateway_rest_api.this.execution_arn}/*/POST/claims/register"
 
 }
 
