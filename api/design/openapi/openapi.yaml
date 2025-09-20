@@ -11,7 +11,7 @@ info:
   contact:
     name: Erick Galindo Aguilar
     email: erickmga123@gmail.com
-    url: 'https://storage.googleapis.com/foodstore-design-dev/foodcorp-dev.html'
+    url: 'https://storage.googleapis.com/formcorp-design/formcorp.html'
     x-role: API Designer
   x-catalog:
     x-id-proxy: api-ne-foodcorp
