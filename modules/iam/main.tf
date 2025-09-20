@@ -108,7 +108,10 @@ resource "aws_iam_policy" "codebuild_logs_policy" {
           "logs:CreateLogStream",
           "logs:PutLogEvents"
         ]
-        Resource = "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/build-design-formcorp*"
+        Resource = [
+          "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/build-design-formcorp",
+          "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/build-design-formcorp:*"
+        ]
       }
     ]
   })
