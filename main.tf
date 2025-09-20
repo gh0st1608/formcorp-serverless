@@ -1,4 +1,4 @@
-# DynamoDB module
+# DynamoDB
 module "dynamodb" {
   source   = "./modules/dynamodb"
   for_each = toset(var.dynamodb_tables)
