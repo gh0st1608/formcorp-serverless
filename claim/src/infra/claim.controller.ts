@@ -20,8 +20,8 @@ export class ClaimController {
 
   @Post("register")
   async create(@Body() dto: RequestClaimDto, @Req() req: Request) {
+    console.log('dto',dto)
     const domain = (req as any).clientDomain;
-    console.log('domain',domain)
     return this.createClaim.save(dto, domain);
   }
 }

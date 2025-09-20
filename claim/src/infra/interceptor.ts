@@ -20,7 +20,9 @@ export class TransformInterceptor implements NestInterceptor {
     const now = Date.now();
 
     if (request.body?.Data) {
-      request.body = request.body?.Data;
+      request.body = request.body.Data;
+    } else {
+      request.body = request.body ?? {};
     }
 
     return next.handle().pipe(
