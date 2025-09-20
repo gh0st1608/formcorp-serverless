@@ -9,7 +9,7 @@ env:
 phases:
   install:
     commands:
-      - echo "Cambiando al directorio del microservicio..."
+      - echo "Cambiando al directorio del microservicio.."
       - cd claim
       - echo "Instalando dependencias para compilación..."
       - npm ci --no-audit
