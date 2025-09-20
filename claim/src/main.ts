@@ -6,7 +6,7 @@ import { TransformInterceptor } from "./infra/interceptor";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
+
   app.useGlobalPipes(
     new ValidationPipe({
       transform: true,

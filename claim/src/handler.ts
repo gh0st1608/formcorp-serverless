@@ -10,7 +10,9 @@ let cachedServer: any;
 async function bootstrapServer() {
   
   const server = express();
-  const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
+ const app = await NestFactory.create(AppModule, new ExpressAdapter(server), {
+      logger: console, // loguea todos los mensajes de NestJS en CloudWatch
+    });
   app.enableShutdownHooks();
   await app.init();
   return createServer(server);
