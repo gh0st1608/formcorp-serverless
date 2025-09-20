@@ -8,6 +8,7 @@ import { AppModule } from "./claim.module";
 let cachedServer: any;
 
 async function bootstrapServer() {
+  
   const server = express();
   const app = await NestFactory.create(AppModule, new ExpressAdapter(server));
   app.enableShutdownHooks();
@@ -16,8 +17,16 @@ async function bootstrapServer() {
 }
 
 export const handler: Handler = async (event, context) => {
-  if (!cachedServer) {
-    cachedServer = await bootstrapServer();
+  try {
+    if (!cachedServer) {
+      cachedServer = await bootstrapServer();
+    }
+    return proxy(cachedServer, event, context, "PROMISE").promise;
+  } catch (err) {
+    console.error("Error en Lambda:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ message: "Error interno en Lambda", error: err.message }),
+    };
   }
-  return proxy(cachedServer, event, context, "PROMISE").promise;
 };
