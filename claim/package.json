@@ -1,0 +1,50 @@
+{
+  "name": "form-corp",
+  "version": "1.0.0",
+  "description": "Servicio de Reclamos con NestJS (arquitectura hexagonal) y soporte AWS Lambda",
+  "author": "",
+  "license": "ISC",
+  "main": ".build/main.js",
+  "scripts": {
+    "start": "nest start",
+    "start:dev": "nest start --watch",
+    "start:debug": "nest start --debug --watch",
+    "build": "nest build -p ./tsconfig.build.json",
+    "start:prod": "node .build/main.js",
+    "lambda:start": "node .build/lambda.js",
+    "test": "jest"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.600.0",
+    "@aws-sdk/lib-dynamodb": "^3.600.0",
+    "@nestjs/common": "^9.0.0",
+    "@nestjs/config": "^3.3.0",
+    "@nestjs/core": "^9.0.0",
+    "@nestjs/platform-express": "^9.0.0",
+    "@vendia/serverless-express": "^4.10.3",
+    "aws-lambda": "^1.0.7",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.13.2",
+    "express": "^4.18.2",
+    "nodemailer": "^7.0.6",
+    "reflect-metadata": "^0.1.13",
+    "rxjs": "^7.5.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^9.0.0",
+    "@nestjs/schematics": "^9.0.0",
+    "@nestjs/testing": "^9.0.0",
+    "@types/aws-serverless-express": "^3.3.10",
+    "@types/express": "^4.17.13",
+    "@types/jest": "^29.5.0",
+    "@types/node": "^18.19.127",
+    "@types/nodemailer": "^7.0.1",
+    "@types/uuid": "^9.0.0",
+    "jest": "^29.5.0",
+    "ts-jest": "^29.0.5",
+    "ts-loader": "^9.4.0",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.0.0"
+  }
+}
