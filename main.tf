@@ -1,10 +1,10 @@
 # DynamoDB module
 module "dynamodb" {
-  source       = "./modules/dynamodb"
-  for_each     = toset(var.dynamodb_tables)
+  source   = "./modules/dynamodb"
+  for_each = toset(var.dynamodb_tables)
 
-  name         = each.value
-  tags         = local.common_tags
+  name = each.value
+  tags = local.common_tags
 }
 
 # Lambda module
@@ -15,20 +15,21 @@ module "lambda" {
   handler       = "index.handler"
   source_dir    = var.lambda_source_dir
   env_variables = {
-    TABLE_NAME = module.dynamodb.table_name
+    CLAIM_TABLE         = module.dynamodb["claim"].table_name
+    CLAIM_COUNTER_TABLE = module.dynamodb["claim_counter"].table_name
   }
   tags = local.common_tags
 }
 
 # API Gateway module (integrates with lambda)
 module "api" {
-  source         = "./modules/apigateway"
-  name           = "forms-api"
-  aws_region     = var.aws_region
-  aws_env        = var.aws_env
-  lambda_arn     = module.lambda.lambda_arn
-  lambda_name    = module.lambda.function_name
-  tags           = local.common_tags
+  source      = "./modules/apigateway"
+  name        = "forms-api"
+  aws_region  = var.aws_region
+  aws_env     = var.aws_env
+  lambda_arn  = module.lambda.lambda_arn
+  lambda_name = module.lambda.function_name
+  tags        = local.common_tags
 }
 
 # Site (S3 + CloudFront)
@@ -45,8 +46,8 @@ module "iam" {
 }
 
 module "codebuild" {
-  source = "./modules/codebuild"
-  repository = var.repository_form
+  source                     = "./modules/codebuild"
+  repository                 = var.repository_form
   codebuild_service_role_arn = module.iam.codebuild_service_role_arn
 }
 
