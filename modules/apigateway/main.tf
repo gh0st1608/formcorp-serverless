@@ -41,7 +41,7 @@ resource "aws_lambda_permission" "forms_apgw" {
 }
 
 resource "aws_api_gateway_deployment" "this" {
-  depends_on = [aws_api_gateway_integration.lambda_proxy]
+  depends_on = [aws_api_gateway_integration.lambda_proxy_register]
   rest_api_id = aws_api_gateway_rest_api.this.id
   triggers = {
     redeploy = sha1(var.lambda_arn)
