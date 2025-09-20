@@ -20,7 +20,7 @@ export class ClaimController {
 
   @Post("register")
   async create(@Body() dto: RequestClaimDto, @Req() req: Request) {
-    const domain = (req as any).clientDomain; // proviene del HeadersGuard
+    const domain = (req as any).clientDomain;
     console.log('domain',domain)
     return this.createClaim.save(dto, domain);
   }
