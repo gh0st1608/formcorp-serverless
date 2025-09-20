@@ -78,11 +78,9 @@ export class ClaimApplication {
     await this.email.sendEmail(recipient, subject, body);
 
     return {
-      Data: {
         codigo: codigoSeguimiento,
         statusCode: 200,
         message: `Creación de ${tipoSolicitud === 'Q' ? 'queja' : 'reclamo'} exitosa`,
-      },
     };
   }
 }
