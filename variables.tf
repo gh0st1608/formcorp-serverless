@@ -5,21 +5,14 @@ variable "aws_region" {
 }
 
 variable "aws_env" {
-  description = "AWS environment."
+  description = "Environment."
   type        = string
   default     = "dev"
 }
 
-variable "domain_name" {
-  description = "Root domain, e.g. tudominio.com"
+variable "fqdn" {
+  description = "Nombre del bucket del frontend"
   type        = string
-  default     = ""
-}
-
-variable "subdomain" {
-  description = "Subdomain to use for the site (e.g. forms)"
-  type        = string
-  default     = "forms"
 }
 
 variable "certificate_arn" {
@@ -49,4 +42,9 @@ variable "aliases" {
 variable "repository_form" {
   description = "Repositorio del proyecto"
   type        = string
+}
+
+variable "dynamodb_tables" {
+  type    = list(string)
+  default = ["claim", "claim_counter"]
 }

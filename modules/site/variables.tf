@@ -10,7 +10,7 @@ variable "tags" {
 
 variable "fqdn" {
   type        = string
-  description = "Dominio principal"
+  description = "Nombre del bucket del frontend"
 }
 
 variable "aliases" {

@@ -1,14 +1,16 @@
 # DynamoDB module
 module "dynamodb" {
   source       = "./modules/dynamodb"
-  name         = "forms_table"
+  for_each     = toset(var.dynamodb_tables)
+
+  name         = each.value
   tags         = local.common_tags
 }
 
 # Lambda module
 module "lambda" {
   source        = "./modules/lambda"
-  function_name = "forms-submit"
+  function_name = "cargocom-claim"
   runtime       = "nodejs18.x"
   handler       = "index.handler"
   source_dir    = var.lambda_source_dir

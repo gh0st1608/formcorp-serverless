@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "site" {
-  bucket = replace(var.fqdn, ".", "-")
+  bucket = var.fqdn
   acl    = "private"
   tags   = var.tags
 }

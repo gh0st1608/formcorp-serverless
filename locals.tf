@@ -1,5 +1,5 @@
 locals {
-  fqdn        = "${var.subdomain}.${var.domain_name}"
+  fqdn        = var.fqdn
   common_tags = merge({
     Project     = "forms-serverless"
     Environment = "dev"
