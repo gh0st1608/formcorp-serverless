@@ -28,7 +28,7 @@ phases:
 
   post_build:
     commands:
-      - echo "🔍 Verificando existencia de la función Lambda.."
+      - echo "🔍 Verificando existencia de la función Lambda."
       - |
         if ! aws lambda get-function --function-name $LAMBDA_NAME; then
           echo "❌ La función Lambda '$LAMBDA_NAME' no existe. Debe crearse primero con Terraform."
