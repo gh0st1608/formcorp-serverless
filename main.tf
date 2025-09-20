@@ -10,7 +10,7 @@ module "dynamodb" {
 # Lambda module
 module "lambda" {
   source        = "./modules/lambda"
-  function_name = "cargocom-claim"
+  function_name = "cargocom-claim-service"
   runtime       = "nodejs18.x"
   handler       = "index.handler"
   source_dir    = var.lambda_source_dir
