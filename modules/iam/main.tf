@@ -31,7 +31,10 @@ resource "aws_iam_policy" "codebuild_s3_policy" {
       {
         Effect   = "Allow"
         Action   = ["s3:ListBucket"]
-        Resource = "arn:aws:s3:::formcorp-design"
+        Resource = [
+          "arn:aws:s3:::formcorp-design",
+          "arn:aws:s3:::cargocom-claim-source"
+        ]
       },
       {
         Effect = "Allow"
@@ -40,7 +43,10 @@ resource "aws_iam_policy" "codebuild_s3_policy" {
           "s3:PutObject",
           "s3:PutObjectAcl"
         ]
-        Resource = "arn:aws:s3:::formcorp-design/*"
+        Resource = [
+          "arn:aws:s3:::formcorp-design/*",
+          "arn:aws:s3:::cargocom-claim-source/*"
+        ]
       }
     ]
   })

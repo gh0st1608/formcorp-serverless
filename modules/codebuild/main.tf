@@ -85,7 +85,7 @@ resource "aws_codebuild_project" "claim_lambda" {
 
     environment_variable {
       name  = "S3_BUCKET"
-      value = "cargocom-claim-source-code"
+      value = "cargocom-claim-source"
     }
 
     environment_variable {
