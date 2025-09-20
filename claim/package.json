@@ -11,7 +11,7 @@
     "start:debug": "nest start --debug --watch",
     "build": "nest build -p ./tsconfig.build.json",
     "start:prod": "node .build/main.js",
-    "lambda:start": "node .build/lambda.js",
+    "build:lambda": "nest build -p ./tsconfig.lambda.json",
     "test": "jest"
   },
   "dependencies": {

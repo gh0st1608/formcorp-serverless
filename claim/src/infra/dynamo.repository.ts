@@ -67,7 +67,7 @@ export class DynamoClaimRepository implements IClaimRepository {
   async getNextCorrelativo(domain: Domain, tipo: 'Q' | 'R'): Promise<number> {
     const params = {
       TableName: this.counterTable,
-      Key: { domain, tipo },
+      Key: { id: `${domain}#${tipo}` },
       UpdateExpression:
         'SET lastCorrelative = if_not_exists(lastCorrelative, :start) + :inc',
       ExpressionAttributeValues: {
