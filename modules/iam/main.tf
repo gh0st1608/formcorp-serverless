@@ -57,8 +57,8 @@ resource "aws_iam_policy" "codebuild_codeconnections_policy" {
     Version = "2012-10-17",
     Statement = [
       {
-        Effect   = "Allow",
-        Action   = [
+        Effect = "Allow",
+        Action = [
           "codeconnections:UseConnection"
         ],
         Resource = "arn:aws:codeconnections:us-east-1:248268265208:connection/5cfecd47-52d5-4d9d-a0b1-7296ebbad5c5"
@@ -109,8 +109,8 @@ resource "aws_iam_policy" "codebuild_logs_policy" {
           "logs:PutLogEvents"
         ]
         Resource = [
-          "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/build-design-formcorp",
-          "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/build-design-formcorp:*"
+          "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/*",
+          "arn:aws:logs:us-east-1:${data.aws_caller_identity.current.account_id}:log-group:/aws/codebuild/*:log-stream:*"
         ]
       }
     ]
