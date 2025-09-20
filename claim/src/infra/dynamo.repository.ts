@@ -5,7 +5,7 @@ import {
   DynamoDBDocumentClient,
   PutCommand,
   GetCommand,
-  UpdateCommand
+  UpdateCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { Domain } from '../domain/enum';
 
@@ -66,17 +66,18 @@ export class DynamoClaimRepository implements IClaimRepository {
 
   async getNextCorrelativo(domain: Domain, tipo: 'Q' | 'R'): Promise<number> {
     const params = {
-  TableName: this.counterTable,
-  Key: { domain, tipo },
-  UpdateExpression: 'SET lastCorrelative = if_not_exists(lastCorrelative, :start) + :inc',
-  ExpressionAttributeValues: {
-    ':inc': 1,
-    ':start': 0,
-  },
-  ReturnValues: 'UPDATED_NEW' as const, // <- 'as const' fija el literal para TypeScript
-};
+      TableName: this.counterTable,
+      Key: { domain, tipo },
+      UpdateExpression:
+        'SET lastCorrelative = if_not_exists(lastCorrelative, :start) + :inc',
+      ExpressionAttributeValues: {
+        ':inc': 1,
+        ':start': 0,
+      },
+      ReturnValues: 'UPDATED_NEW' as const, // <- 'as const' fija el literal para TypeScript
+    };
 
-const result = await this.docClient.send(new UpdateCommand(params));
+    const result = await this.docClient.send(new UpdateCommand(params));
 
     if (
       !result.Attributes ||
