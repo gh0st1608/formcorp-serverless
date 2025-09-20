@@ -4,8 +4,8 @@ properties:
   Data:
     type: object    
     properties:
-      id:
-        $ref: ../attributes/id.yaml
+      codigo:
+        $ref: ../attributes/codigo.yaml
       statusCode:
         $ref: ../attributes/code.yaml
       message:

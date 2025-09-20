@@ -14,3 +14,4 @@ content:
               lastname: 'Huerta Condori'
               case: 'Error en entrega'
               email : 'xxxyyyzzz@gmail.com'
+              tipoSolicitud: R

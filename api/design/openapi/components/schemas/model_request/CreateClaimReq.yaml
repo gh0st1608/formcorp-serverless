@@ -10,6 +10,7 @@ properties:
           - lastname
           - case
           - email
+          - tipoSolicitud
         type: object
         properties:
           name:
@@ -20,6 +21,8 @@ properties:
             $ref: ../attributes/claim/case.yaml
           email:
             $ref: ../attributes/claim/email.yaml
+          tipoSolicitud:
+            $ref: ../attributes/claim/tipoSolicitud.yaml
 
 
           
