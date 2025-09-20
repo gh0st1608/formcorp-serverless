@@ -1,4 +1,6 @@
+# =============================
 # 🔹 Rol de CodeBuild
+# =============================
 resource "aws_iam_role" "codebuild_service_role" {
   name               = "codebuild-build-design-formcorp-service-role"
   assume_role_policy = data.aws_iam_policy_document.codebuild_assume.json
@@ -44,6 +46,9 @@ resource "aws_iam_policy" "codebuild_s3_policy" {
   })
 }
 
+# =============================
+# 🔗 POLÍTICA CodeConnections
+# =============================
 resource "aws_iam_policy" "codebuild_codeconnections_policy" {
   name        = "CodeBuildCodeConnectionsPolicy-formcorp-design"
   description = "Permisos para que CodeBuild use CodeConnections con GitHub/Bitbucket"
@@ -62,13 +67,33 @@ resource "aws_iam_policy" "codebuild_codeconnections_policy" {
   })
 }
 
+# =============================
+# 🐑 POLÍTICA Lambda (Wildcard)
+# =============================
+data "aws_caller_identity" "current" {}
 
+resource "aws_iam_policy" "codebuild_lambda_policy" {
+  name        = "CodeBuildLambdaPolicy-formcorp"
+  description = "Permite a CodeBuild actualizar cualquier función Lambda en la cuenta"
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "lambda:GetFunction",
+          "lambda:UpdateFunctionCode"
+        ],
+        Resource = "arn:aws:lambda:us-east-1:${data.aws_caller_identity.current.account_id}:function:*"
+      }
+    ]
+  })
+}
 
 # =============================
 # 📜 POLÍTICA LOGS
 # =============================
-data "aws_caller_identity" "current" {}
-
 resource "aws_iam_policy" "codebuild_logs_policy" {
   name        = "CodeBuildLogsPolicy-formcorp-design"
   description = "Permisos de CodeBuild para escribir logs en CloudWatch"
@@ -90,7 +115,7 @@ resource "aws_iam_policy" "codebuild_logs_policy" {
 }
 
 # =============================
-# 🔗 Adjuntar politicas al rol
+# 🔗 Adjuntar políticas al rol
 # =============================
 resource "aws_iam_role_policy_attachment" "codebuild_attach_s3" {
   role       = aws_iam_role.codebuild_service_role.name
@@ -105,4 +130,9 @@ resource "aws_iam_role_policy_attachment" "codebuild_attach_logs" {
 resource "aws_iam_role_policy_attachment" "codebuild_attach_codeconnections" {
   role       = aws_iam_role.codebuild_service_role.name
   policy_arn = aws_iam_policy.codebuild_codeconnections_policy.arn
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_lambda_attach" {
+  role       = aws_iam_role.codebuild_service_role.name
+  policy_arn = aws_iam_policy.codebuild_lambda_policy.arn
 }
