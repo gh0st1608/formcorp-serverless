@@ -12,7 +12,7 @@ module "this" {
     enabled = true
   }
 
-  website = null
+  website = {}
 
   block_public_acls       = true
   block_public_policy     = true
