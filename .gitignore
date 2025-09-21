@@ -18,3 +18,7 @@ claim/node_modules
 claim/.env
 claim/.build
 claim/.build-lambda
+
+deploys_front/
+
+

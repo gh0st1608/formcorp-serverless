@@ -19,6 +19,17 @@ export async function setupApp(app: INestApplication) {
     new TransformInterceptor()
   );
 
+  app.enableCors({
+    origin: [
+      "https://dev.solutionserj.com",
+      "https://test.solutionserj.com",
+      "https://prod.solutionserj.com"
+    ],
+    methods: ["GET", "POST", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  });
+
   // Aquí podrías agregar middlewares globales si los necesitas
   // app.use(someMiddleware);
 
