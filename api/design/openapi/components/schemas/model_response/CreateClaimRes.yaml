@@ -4,13 +4,13 @@ properties:
   Data:
     type: object    
     properties:
-      codigo:
-        $ref: ../attributes/codigo.yaml
+      trackingCode:
+        $ref: ../attributes/trackingCode.yaml
       statusCode:
         $ref: ../attributes/code.yaml
       message:
         $ref: ../attributes/message.yaml
     required:
-      - id
+      - trackingCode
       - statusCode
       - message 

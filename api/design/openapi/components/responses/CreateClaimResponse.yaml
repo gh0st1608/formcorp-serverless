@@ -10,7 +10,7 @@ content:
         summary: Crear reclamo
         value:
           Data:
-            codigo: CG-Q-000001
+            trackingCode: CG-Q-000001
             statusCode: 200
             message: Creación de queja exitosa
             
