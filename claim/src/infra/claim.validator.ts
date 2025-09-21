@@ -9,8 +9,12 @@ export class HeadersGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
 
-    if (req.method === "OPTIONS") return true;
-    
+    if (req.method === "OPTIONS") {
+      console.log('entro al metodo options')
+      return true;
+    }
+      
+
     const channel = req.headers["channel"] || req.headers["Channel"];
     const apiKey = req.headers["x-api-key"] || req.headers["X-Api-Key"];
     if (!channel || !apiKey) {
