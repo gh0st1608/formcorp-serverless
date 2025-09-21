@@ -21,9 +21,9 @@ export async function setupApp(app: INestApplication) {
 
   app.enableCors({
     origin: [
-      "https://dev.solutionserj.com",
-      "https://test.solutionserj.com",
-      "https://prod.solutionserj.com"
+      "forms.cargocomgroup.com",
+      "forms.cargocomperu.net",
+      "forms.cargocomcustoms.com"
     ],
     methods: ["GET", "POST", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
