@@ -20,15 +20,16 @@ export async function setupApp(app: INestApplication) {
   );
 
   app.enableCors({
-    origin: [
-      "forms.cargocomgroup.com",
-      "forms.cargocomperu.net",
-      "forms.cargocomcustoms.com"
-    ],
-    methods: ["GET", "POST", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-  });
+  origin: [
+    "https://forms.cargocomgroup.com",
+    "https://forms.cargocomperu.net",
+    "https://forms.cargocomcustoms.com"
+  ],
+  methods: ["GET", "POST", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization", "x-client-domain"], // ✅ agregado
+  credentials: true,
+});
+
 
   // Aquí podrías agregar middlewares globales si los necesitas
   // app.use(someMiddleware);
