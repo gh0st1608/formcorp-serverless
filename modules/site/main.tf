@@ -2,6 +2,28 @@ resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for ${var.fqdn}"
 }
 
+resource "aws_cloudfront_response_headers_policy" "cors_policy" {
+  name = "CORS-Allow-All"
+
+  cors_config {
+    access_control_allow_credentials = false # o true, según necesites
+
+    access_control_allow_headers {
+      items = ["*"]
+    }
+
+    access_control_allow_methods {
+      items = ["GET", "POST", "OPTIONS"]
+    }
+
+    access_control_allow_origins {
+      items = ["*"]
+    }
+
+    origin_override = true
+  }
+}
+
 
 resource "aws_s3_bucket_policy" "policy" {
   bucket = var.bucket_id
@@ -41,7 +63,8 @@ resource "aws_cloudfront_distribution" "this" {
     cached_methods   = ["GET", "HEAD"]
     target_origin_id = "s3-${var.bucket_id}"
     viewer_protocol_policy = "redirect-to-https"
-
+    response_headers_policy_id = aws_cloudfront_response_headers_policy.cors_policy.id
+    
     forwarded_values {
       query_string = false
       cookies {
