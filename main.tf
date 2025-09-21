@@ -39,7 +39,12 @@ module "site" {
   certificate_arn = var.certificate_arn
   aliases         = var.aliases
   tags            = local.common_tags
+
+  bucket_id                    = module.s3_site.bucket_id
+  bucket_arn                   = module.s3_site.bucket_arn
+  bucket_regional_domain_name  = module.s3_site.bucket_regional_domain_name
 }
+
 
 module "iam" {
   source = "./modules/iam"
@@ -51,6 +56,12 @@ module "codebuild" {
   codebuild_service_role_arn = module.iam.codebuild_service_role_arn
 }
 
-module "s3" {
-  source = "./modules/s3"
+module "s3_design" {
+  source = "./modules/s3_design"
+}
+
+module "s3_site" {
+  source = "./modules/s3_site"
+  fqdn            = local.fqdn
+  tags            = local.common_tags
 }

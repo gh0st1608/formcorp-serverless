@@ -10,4 +10,7 @@ modules/.build/
 *.tfvars.private
 secrets.yaml
 *.tfvars
+credentials.tfrc.json
 
+claim/node_modules
+api/design/node_modules

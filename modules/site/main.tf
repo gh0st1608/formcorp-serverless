@@ -1,29 +1,10 @@
-resource "aws_s3_bucket" "site" {
-  bucket = var.fqdn
-  acl    = "private"
-  tags   = var.tags
-}
-
-resource "aws_s3_bucket_object" "index_html" {
-  bucket = aws_s3_bucket.site.id
-  key    = "index.html"
-  content = <<-HTML
-    <!doctype html>
-    <html>
-      <head><meta charset="utf-8"><title>${var.fqdn}</title></head>
-      <body><h1>Placeholder for ${var.fqdn}</h1></body>
-    </html>
-  HTML
-  content_type = "text/html"
-  acl          = "private"
-}
-
 resource "aws_cloudfront_origin_access_identity" "oai" {
   comment = "OAI for ${var.fqdn}"
 }
 
+
 resource "aws_s3_bucket_policy" "policy" {
-  bucket = aws_s3_bucket.site.id
+  bucket = var.bucket_id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -34,7 +15,7 @@ resource "aws_s3_bucket_policy" "policy" {
           CanonicalUser = aws_cloudfront_origin_access_identity.oai.s3_canonical_user_id
         }
         Action   = "s3:GetObject"
-        Resource = "${aws_s3_bucket.site.arn}/*"
+        Resource = "${var.bucket_arn}/*"
       }
     ]
   })
@@ -47,8 +28,8 @@ resource "aws_cloudfront_distribution" "this" {
   aliases = var.aliases
 
   origin {
-    origin_id   = "s3-${aws_s3_bucket.site.id}"
-    domain_name = aws_s3_bucket.site.bucket_regional_domain_name
+    origin_id   = "s3-${var.bucket_id}"
+    domain_name = var.bucket_regional_domain_name
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.oai.cloudfront_access_identity_path
@@ -58,7 +39,7 @@ resource "aws_cloudfront_distribution" "this" {
   default_cache_behavior {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "s3-${aws_s3_bucket.site.id}"
+    target_origin_id = "s3-${var.bucket_id}"
     viewer_protocol_policy = "redirect-to-https"
 
     forwarded_values {
@@ -98,11 +79,6 @@ resource "aws_cloudfront_distribution" "this" {
   }
 
   tags = var.tags
-
-  depends_on = [
-    aws_s3_bucket_object.index_html,
-    aws_s3_bucket_policy.policy
-  ]
 }
 
 
