@@ -13,3 +13,6 @@ secrets.yaml
 
 api/design/node_modules
 api/design/dist
+
+claim/.env
+claim/node_modules

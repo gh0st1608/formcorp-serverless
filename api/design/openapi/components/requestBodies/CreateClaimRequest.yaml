@@ -10,8 +10,22 @@ content:
         value:
           Data:
             Claim:
-              name: 'Omar Alex'
-              lastname: 'Huerta Condori'
-              case: 'Error en entrega'
-              email : 'xxxyyyzzz@gmail.com'
+              nombre: 'Omar Alex'
+              apellidos: 'Huerta Condori'
+              correo: 'xxxyyyzzz@gmail.com'
+              asunto: 'Error en entrega'
+              autorizaDatos: true
+              menorEdad: false
+              datosApoderado: 'Padre del menor'
+              detalleBienContratado: 'Paquete express 123'
+              detalleIncidencia: 'Entrega fuera de tiempo'
+              domicilio: 'Av. Los Álamos 123, Lima'
+              fechaSolicitud: '2025-09-21T12:00:00Z'
+              numeroDocumento: '12345678'
+              numeroPedido: 'ORD-78945'
+              nombreProveedor: 'CargoCom Perú'
+              pedidoCliente: 'CUST-223344'
+              referenciaDomicilio: 'Frente al parque'
+              telefono: '+51 987654321'
+              tipoBienContratado: 'Servicio de transporte'
               tipoSolicitud: Q
