@@ -30,7 +30,7 @@ export async function setupApp(app: INestApplication) {
   ],
   methods: ["GET", "POST", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization", "x-client-domain"], // ✅ agregado
-  credentials: true,
+  credentials: false,
 });
 
 
