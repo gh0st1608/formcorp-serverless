@@ -15,7 +15,7 @@ resource "local_file" "dummy_lambda" {
 # Create zip with dummy
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_file = local_file.dummy_lambda.filename
+  source_file = fileexists(local_file.dummy_lambda.filename) ? local_file.dummy_lambda.filename : "${path.module}/dummy.js"
   output_path = "${path.module}/../.build/${var.function_name}.zip"
 }
 
