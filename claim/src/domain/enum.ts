@@ -1,6 +1,6 @@
 export enum Domain {
-  CARGOCOM_PERU = "forms.cargocomperu.com",//"cargocomperu.net"
-  CARGOCOM_GROUP = "forms.cargocomgroup.net", //cargocomgroup.com
+  CARGOCOM_PERU = "forms.cargocomperu.net",//"cargocomperu.net"
+  CARGOCOM_GROUP = "forms.cargocomgroup.com", //cargocomgroup.com
   CARGOCOM_CUSTOMS = "forms.cargocomcustoms.com",
 }
 
