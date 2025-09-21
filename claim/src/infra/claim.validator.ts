@@ -8,10 +8,8 @@ export class HeadersGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const req = context.switchToHttp().getRequest();
-    console.log('req.headers',req.headers)
     const channel = req.headers["channel"] || req.headers["Channel"];
     const apiKey = req.headers["x-api-key"] || req.headers["X-Api-Key"];
-    console.log("1");
     if (!channel || !apiKey) {
       throw new BadRequestException("Missing required headers: channel or x-api-key");
     }
@@ -25,7 +23,6 @@ export class HeadersGuard implements CanActivate {
       req.headers["x-forwarded-host"], // si CloudFront lo reenvía
       req.headers["host"],             // fallback
     ].filter(Boolean);
-    console.log("2");
 
     const domain = String(domainCandidates[0] || "").trim();
     if (!domain) {

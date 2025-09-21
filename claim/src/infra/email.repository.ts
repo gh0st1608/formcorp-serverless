@@ -37,7 +37,7 @@ export class EmailRepositoryImpl implements IEmailRepository {
         from: process.env.SMTP_FROM || `"No Reply" <${process.env.SMTP_USER}>`,
         to,
         subject,
-        text: body,
+        html: body,
       });
 
       console.log(`Email enviado a ${to} con subject "${subject}"`);

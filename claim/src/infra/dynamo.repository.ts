@@ -18,23 +18,18 @@ export class DynamoClaimRepository implements IClaimRepository {
     const client = new DynamoDBClient({
       region: process.env.AWS_REGION || 'us-east-1',
     });
-    this.docClient = DynamoDBDocumentClient.from(client);
+
+    this.docClient = DynamoDBDocumentClient.from(client, {
+      marshallOptions: {
+        convertClassInstanceToMap: true, // 👈 clave para soportar instancias de clase
+      },
+    });
   }
 
   async save(claim: Claim): Promise<Claim> {
     const command = new PutCommand({
       TableName: this.tableName,
-      Item: {
-        id: claim.id,
-        name: claim.name,
-        lastname: claim.lastname,
-        email: claim.email,
-        caseDescription: claim.caseDescription,
-        tipoSolicitud: claim.tipo,
-        domain: claim.domain,
-        codSeguimiento: claim.codigoSeguimiento,
-        createdAt: claim.createdAt,
-      },
+      Item: claim, // 👈 puedes pasar la instancia de Claim directamente
     });
 
     await this.docClient.send(command);
@@ -51,16 +46,31 @@ export class DynamoClaimRepository implements IClaimRepository {
 
     if (!result.Item) return null;
 
+    // Dynamo devuelve un objeto plano, así que reconstruimos la entidad Claim
     return new Claim(
       result.Item.id,
-      result.Item.name,
-      result.Item.lastname,
+      result.Item.firstName,
+      result.Item.lastName,
       result.Item.email,
       result.Item.caseDescription,
-      result.Item.tipoSolicitud,
       result.Item.domain,
-      result.Item.codSeguimiento,
+      result.Item.requestType,
+      result.Item.trackingCode,
       result.Item.createdAt,
+      result.Item.authorizeData,
+      result.Item.guardianData,
+      result.Item.contractedGoodDetail,
+      result.Item.incidentDetail,
+      result.Item.address,
+      result.Item.requestDate,
+      result.Item.underAge,
+      result.Item.documentNumber,
+      result.Item.orderNumber,
+      result.Item.providerName,
+      result.Item.customerOrder,
+      result.Item.addressReference,
+      result.Item.phone,
+      result.Item.contractedGoodType,
     );
   }
 
@@ -74,7 +84,7 @@ export class DynamoClaimRepository implements IClaimRepository {
         ':inc': 1,
         ':start': 0,
       },
-      ReturnValues: 'UPDATED_NEW' as const, // <- 'as const' fija el literal para TypeScript
+      ReturnValues: 'UPDATED_NEW' as const,
     };
 
     const result = await this.docClient.send(new UpdateCommand(params));

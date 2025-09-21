@@ -9,7 +9,7 @@ import {
   HttpCode,
   Req,
 } from "@nestjs/common";
-import { RequestClaimDto } from "../application/dto/create-claim.dto";
+import { RequestClaimDTO } from "../application/dto/create-claim.dto";
 import { ClaimApplication } from "../application/claim.application";
 import { HeadersGuard } from "./claim.validator";
 
@@ -19,8 +19,7 @@ export class ClaimController {
   constructor(private readonly createClaim: ClaimApplication) {}
 
   @Post("register")
-  async create(@Body() dto: RequestClaimDto, @Req() req: Request) {
-    console.log('dto',dto)
+  async create(@Body() dto: RequestClaimDTO, @Req() req: Request) {
     const domain = (req as any).clientDomain;
     return this.createClaim.save(dto, domain);
   }

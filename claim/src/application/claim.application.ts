@@ -1,86 +1,57 @@
-import { v4 as uuidv4 } from 'uuid';
-import {
-  IClaimRepository,
-  IClaimRepositorySymbol,
-} from '../domain/claim.repository';
-import { Claim } from '../domain/claim.entity';
-import { RequestClaimDto } from './dto/create-claim.dto';
 import { Inject, Injectable } from '@nestjs/common';
+import { Claim } from '../domain/claim.entity';
+import { RequestClaimDTO } from './dto/create-claim.dto';
+import { IClaimRepository, IClaimRepositorySymbol } from '../domain/claim.repository';
 import { IEmailRepository, IEmailRepositorySymbol } from './email.repository';
-import { AliasDomain, Domain } from './../domain/enum';
+import { Domain } from './../domain/enum';
+import { ClaimCodeService } from './services/claim-code.service';
+import { ClaimEmailService } from './services/claim-email.service';
+import { ClaimFactory } from './services/claim-factory.service';
+import { DomainMessage } from '../domain/message';
 
 @Injectable()
 export class ClaimApplication {
   private readonly domainRecipients: Record<Domain, string> = {
-    [Domain.CARGOCOM_PERU]: 'erickmga123@gmail.com', //Cargocom@cargocomperu.net
-    [Domain.CARGOCOM_GROUP]: 'egalindoa@uni.pe', //Legal@cargocomgroup.com
+    [Domain.CARGOCOM_PERU]: 'erickmga123@gmail.com',
+    [Domain.CARGOCOM_GROUP]: 'egalindoa@uni.pe',
     [Domain.CARGOCOM_CUSTOMS]: 'Legal1@cargocomperu.net',
   };
 
   constructor(
-    @Inject(IClaimRepositorySymbol)
-    private readonly claim: IClaimRepository,
-    @Inject(IEmailRepositorySymbol)
-    private readonly email: IEmailRepository,
+    @Inject(IClaimRepositorySymbol) private readonly claim: IClaimRepository,
+    @Inject(IEmailRepositorySymbol) private readonly email: IEmailRepository,
+    private readonly claimCodeService: ClaimCodeService,
+    private readonly claimEmailService: ClaimEmailService,
   ) {}
 
-  async save(dto: RequestClaimDto, domain: string) {
-    const { name, lastname, email, caseDescription, tipoSolicitud } = dto.Claim;
+  async save(dto: RequestClaimDTO, domain: string) {
+    const claimData = dto.Claim;
 
-    // Convertir a enum
+    // Validar dominio
     const domainKey = Object.values(Domain).find((d) => d === domain);
-    if (!domainKey)
-      throw new Error(`No recipient configured for domain ${domain}`);
+    if (!domainKey) throw new Error(`No recipient configured for domain ${domain}`);
 
-    const AliasMap: Record<Domain, string> = {
-      [Domain.CARGOCOM_PERU]: AliasDomain.CARGOCOM_PERU,
-      [Domain.CARGOCOM_GROUP]: AliasDomain.CARGOCOM_GROUP,
-      [Domain.CARGOCOM_CUSTOMS]: AliasDomain.CARGOCOM_CUSTOMS,
-    };
+    // Obtener correlativo
+    const correlativo = await this.claim.getNextCorrelativo(domainKey, claimData.requestType);
 
-    const alias = AliasMap[domainKey];
+    // Código de seguimiento
+    const trackingCode = this.claimCodeService.buildTrackingCode(domainKey, claimData.requestType, correlativo);
 
-    // Obtener correlativo desde DynamoDB según empresa y tipo
-    const correlativo = await this.claim.getNextCorrelativo(
-      domainKey,
-      tipoSolicitud,
-    );
+    // Crear entidad con factory
+    const claim = ClaimFactory.create(dto, domainKey, trackingCode);
 
-    // Construir código de seguimiento
-    const codigoSeguimiento = `${alias}-${tipoSolicitud}-${String(
-      correlativo,
-    ).padStart(6, '0')}`;
+    await this.claim.save(claim);
 
-    const id = uuidv4();
-    const now = new Date().toISOString();
+    // Construcción de correo
+    const subject = this.claimEmailService.buildSubject(claimData,trackingCode);
+    const body = this.claimEmailService.buildHtmlBody(claimData, trackingCode, claim.createdAt);
 
-    const claim = new Claim(
-      id,
-      name,
-      lastname,
-      email,
-      caseDescription,
-      now,
-      domainKey as Domain,
-      tipoSolicitud,
-      codigoSeguimiento,
-    );
-
-    const saved = await this.claim.save(claim);
-
-    const recipient = this.domainRecipients[domainKey as Domain];
-
-    const subject = `Nuevo ${
-      tipoSolicitud === 'Q' ? 'queja' : 'reclamo'
-    } de ${name} ${lastname}`;
-    const body = `Caso: ${caseDescription}\nEmail: ${email}\nCódigo: ${codigoSeguimiento}`;
-
-    await this.email.sendEmail(recipient, subject, body);
+    await this.email.sendEmail(this.domainRecipients[domainKey], subject, body);
 
     return {
-        codigo: codigoSeguimiento,
-        statusCode: 200,
-        message: `Creación de ${tipoSolicitud === 'Q' ? 'queja' : 'reclamo'} exitosa`,
+      trackingCode,
+      statusCode: 200,
+      message: claimData.requestType === 'Q' ? DomainMessage.CREATE_COMPLAINT_SUCESS : DomainMessage.CREATE_CLAIM_SUCESS,
     };
   }
 }

@@ -7,6 +7,9 @@ import { ClaimApplication } from './application/claim.application';
 import { HeadersGuard } from './infra/claim.validator';
 import { EmailRepositoryImpl } from './infra/email.repository';
 import { IEmailRepositorySymbol } from './application/email.repository';
+import { ClaimCodeService } from './application/services/claim-code.service';
+import { ClaimEmailService } from './application/services/claim-email.service';
+import { ClaimFactory } from './application/services/claim-factory.service';
 
 @Module({
   imports: [
@@ -23,6 +26,9 @@ import { IEmailRepositorySymbol } from './application/email.repository';
     { provide: IEmailRepositorySymbol, useClass: EmailRepositoryImpl },
     HeadersGuard,
     ClaimApplication,
+    ClaimCodeService,
+    ClaimEmailService,
+    ClaimFactory
   ],
 })
 export class AppModule {}
