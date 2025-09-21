@@ -15,8 +15,13 @@ module "lambda" {
   handler       = "index.handler"
   source_dir    = var.lambda_source_dir
   env_variables = {
-    CLAIM_TABLE         = module.dynamodb["claim"].table_name
-    CLAIM_COUNTER_TABLE = module.dynamodb["claim_counter"].table_name
+    CLAIMS_TABLE  = module.dynamodb["claim"].table_name
+    COUNTER_TABLE = module.dynamodb["claim_counter"].table_name
+    SMTP_FROM     = var.smtp_from
+    SMTP_HOST     = var.smtp_host
+    SMTP_PASS     = var.smtp_pass
+    SMTP_PORT     = var.smtp_port
+    SMTP_USER     = var.smtp_user
   }
   tags = local.common_tags
 }
@@ -40,9 +45,9 @@ module "site" {
   aliases         = var.aliases
   tags            = local.common_tags
 
-  bucket_id                    = module.s3_site.bucket_id
-  bucket_arn                   = module.s3_site.bucket_arn
-  bucket_regional_domain_name  = module.s3_site.bucket_regional_domain_name
+  bucket_id                   = module.s3_site.bucket_id
+  bucket_arn                  = module.s3_site.bucket_arn
+  bucket_regional_domain_name = module.s3_site.bucket_regional_domain_name
 }
 
 
@@ -62,6 +67,6 @@ module "s3_design" {
 
 module "s3_site" {
   source = "./modules/s3_site"
-  fqdn            = local.fqdn
-  tags            = local.common_tags
+  fqdn   = local.fqdn
+  tags   = local.common_tags
 }

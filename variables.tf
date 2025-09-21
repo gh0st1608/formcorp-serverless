@@ -48,3 +48,28 @@ variable "dynamodb_tables" {
   type    = list(string)
   default = ["claim", "claim_counter"]
 }
+
+variable "dynamodb_tables" {
+  type    = list(string)
+  default = ["claim", "claim_counter"]
+}
+
+variable "smtp_from" {
+  type = string
+}
+
+variable "smtp_host" {
+  type = string
+}
+
+variable "smtp_pass" {
+  type = string
+}
+
+variable "smtp_port" {
+  type = string
+}
+
+variable "smtp_user" {
+  type = string
+}
