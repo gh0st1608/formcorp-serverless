@@ -75,8 +75,8 @@ export class ClaimEmailService {
     </style>
         </head>
         <body>
-  <h2>Se ha registrado un nuevo ${
-    dto.requestType === RequestType.Q ? 'reclamo' : 'queja'
+  <h2>Se ha registrado ${
+    dto.requestType === "Q" ? 'un nuevo reclamo' : 'una nueva queja'
   }</h2>
   <p><strong>Código de seguimiento:</strong> ${trackingCode}</p>
   <p><strong>Fecha de registro:</strong> ${
