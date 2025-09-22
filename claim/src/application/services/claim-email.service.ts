@@ -14,6 +14,7 @@ export class ClaimEmailService {
     trackingCode: string,
     submissionDate: string,
   ): string {
+    const requestDate = dto.requestDate.split('T')[0];
     return `
       <html>
         <head>
@@ -79,7 +80,7 @@ export class ClaimEmailService {
   }</h2>
   <p><strong>Código de seguimiento:</strong> ${trackingCode}</p>
   <p><strong>Fecha de registro:</strong> ${
-    dto.requestDate || submissionDate
+    requestDate || submissionDate
   }</p>
 
   <div class="section-title">Detalles del reclamo</div>

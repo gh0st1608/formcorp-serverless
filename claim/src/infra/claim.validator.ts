@@ -10,7 +10,6 @@ export class HeadersGuard implements CanActivate {
     const req = context.switchToHttp().getRequest();
 
     if (req.method === "OPTIONS") {
-      console.log('entro al metodo options')
       return true;
     }
       
