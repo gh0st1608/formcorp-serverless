@@ -12,8 +12,8 @@ import { DomainMessage } from '../domain/message';
 @Injectable()
 export class ClaimApplication {
   private readonly domainRecipients: Record<Domain, string> = {
-    [Domain.CARGOCOM_PERU]: 'erickmga123@gmail.com',
-    [Domain.CARGOCOM_GROUP]: 'egalindoa@uni.pe',
+    [Domain.CARGOCOM_PERU]: 'Cargocom@cargocomperu.net',
+    [Domain.CARGOCOM_GROUP]: 'Legal@cargocomgroup.com',
     [Domain.CARGOCOM_CUSTOMS]: 'Legal1@cargocomperu.net',
   };
 
