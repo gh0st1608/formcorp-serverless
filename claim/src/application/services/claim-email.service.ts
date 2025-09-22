@@ -83,23 +83,23 @@ export class ClaimEmailService {
 
   <div class="section-title">Detalles del reclamo</div>
   <table>
+    <tr><th>Número de documento</th><td>${dto.documentNumber || 'N/A'}</td></tr>
+    <tr><th>Número de pedido</th><td>${dto.orderNumber || 'N/A'}</td></tr>
+    <tr><th>Pedido del cliente</th><td>${dto.customerOrder || 'N/A'}</td></tr>
+  </table>
+
+  <div class="section-title">Detalles del cliente</div>
+  <table>
     <tr><th>Nombre</th><td>${dto.firstName} ${dto.lastName}</td></tr>
     <tr><th>Correo electrónico</th><td>${dto.email}</td></tr>
     <tr><th>Teléfono</th><td>${dto.phone || 'N/A'}</td></tr>
-    <tr><th>Número de documento</th><td>${dto.documentNumber || 'N/A'}</td></tr>
-    <tr><th>Número de pedido</th><td>${dto.orderNumber || 'N/A'}</td></tr>
-    <tr><th>Orden del cliente</th><td>${dto.customerOrder || 'N/A'}</td></tr>
+    <tr><th>Dirección</th><td>${dto.address || 'N/A'}</td></tr>
+    <tr><th>Referencia</th><td>${dto.addressReference || 'N/A'}</td></tr>
   </table>
 
   <div class="section-title">Información del proveedor</div>
   <table>
     <tr><th>Nombre del proveedor</th><td>${dto.providerName || 'N/A'}</td></tr>
-  </table>
-
-  <div class="section-title">Información de la dirección</div>
-  <table>
-    <tr><th>Dirección</th><td>${dto.address || 'N/A'}</td></tr>
-    <tr><th>Referencia</th><td>${dto.addressReference || 'N/A'}</td></tr>
   </table>
 
   <div class="section-title">Detalle del incidente</div>
