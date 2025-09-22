@@ -104,9 +104,6 @@ export class ClaimEmailService {
     <tr><th>Referencia</th><td>${dto.addressReference || 'N/A'}</td></tr>
   </table>
 
-  <div class="section-title">Descripción del caso</div>
-  <p>${dto.caseDescription || 'No se proporcionó descripción'}</p>
-
   <div class="section-title">Detalle del incidente</div>
   <p>${dto.incidentDetail || 'N/A'}</p>
 
