@@ -1,5 +1,4 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { Claim } from '../domain/claim.entity';
 import { RequestClaimDTO } from './dto/create-claim.dto';
 import { IClaimRepository, IClaimRepositorySymbol } from '../domain/claim.repository';
 import { IEmailRepository, IEmailRepositorySymbol } from './email.repository';

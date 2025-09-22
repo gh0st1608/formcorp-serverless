@@ -8,6 +8,7 @@ export class ClaimFactory {
     const data = dto.Claim;
     const id = uuidv4();
     const now = new Date().toISOString();
+    const formattedDate = now.split('T')[0];
 
     return new Claim(
       id,
@@ -18,7 +19,7 @@ export class ClaimFactory {
       domain,
       data.requestType,
       trackingCode,
-      now,
+      formattedDate,
       data.authorizeData,
       data.guardianData,
       data.contractedGoodDetail,
