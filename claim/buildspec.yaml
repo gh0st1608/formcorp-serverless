@@ -9,23 +9,20 @@ env:
 phases:
   install:
     commands:
-      - echo "📂 Cambiando al directorio del microservicio.."
+      - echo "Cambiando al directorio del microservicio.."
       - cd claim
-      - echo "📦 Instalando dependencias para compilación..."
+      - echo "Instalando dependencias para compilación..."
       - npm ci --no-audit
 
   build:
     commands:
-      - echo "⚙️ Compilando Lambda..."
+      - echo "Compilando Lambda..."
       - npm run build:lambda
-      - echo "📂 Copiando archivos necesarios al directorio de build.."
+      - echo "Copiando archivos necesarios al directorio de build.."
       - cp package.json package-lock.json .build-lambda/
       - cd .build-lambda
-      - echo "🧹 Instalando solo dependencias de producción..."
       - npm ci --omit=dev --no-audit --no-fund --maxsockets=1
-      - echo "🪓 Eliminando dependencias pesadas (googleapis, nodemailer)..."
-      - npm uninstall googleapis nodemailer
-      - echo "📦 Empaquetando lambda.zip..."
+      - echo "Empaquetando lambda.zip..."
       - zip -r lambda.zip .
       - cd ..
 
@@ -37,7 +34,7 @@ phases:
           echo "❌ La función Lambda '$LAMBDA_NAME' no existe. Debe crearse primero con Terraform."
           exit 1
         fi
-      - echo "☁️ Subiendo a S3.."
+      - echo "Subiendo a S3.."
       - aws s3 cp .build-lambda/lambda.zip s3://$S3_BUCKET/$ZIP_KEY
       - echo "🔍 Verificando existencia del archivo en S3."
       - |
@@ -45,7 +42,7 @@ phases:
           echo "❌ El archivo '$ZIP_KEY' no se encontró en el bucket '$S3_BUCKET'."
           exit 1
         fi
-      - echo "🚀 Actualizando función Lambda..."
+      - echo "Actualizando función Lambda..."
       - aws lambda update-function-code --function-name $LAMBDA_NAME --s3-bucket $S3_BUCKET --s3-key $ZIP_KEY
 
 artifacts:

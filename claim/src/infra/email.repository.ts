@@ -1,74 +1,73 @@
 // src/infrastructure/repositories/email.repository.impl.ts
-import { Injectable, InternalServerErrorException, OnModuleInit } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { IEmailRepository } from '../application/email.repository';
-import * as nodemailer from 'nodemailer';
-import SMTPTransport from 'nodemailer/lib/smtp-transport';
-import { google } from 'googleapis';
+import axios from 'axios';
+import * as qs from 'querystring';
 
 @Injectable()
-export class EmailRepositoryImpl implements IEmailRepository, OnModuleInit {
-  private transporter: nodemailer.Transporter | null = null;
+export class EmailRepositoryImpl implements IEmailRepository {
+  private clientId = process.env.CLIENT_ID!;
+  private clientSecret = process.env.CLIENT_SECRET!;
+  private refreshToken = process.env.REFRESH_TOKEN!;
+  private userEmail = process.env.SMTP_USER!; // tu correo autorizado
 
-  async onModuleInit() {
-    const CLIENT_ID = process.env.CLIENT_ID!;
-    const CLIENT_SECRET = process.env.CLIENT_SECRET!;
-    const REDIRECT_URI = process.env.REDIRECT_URI!;
-    const REFRESH_TOKEN = process.env.REFRESH_TOKEN!;
-    const USER_EMAIL = process.env.SMTP_USER!; // el correo autorizado (ej: tuempresa@gmail.com)
+  // 🔑 Paso 1: obtener accessToken desde refreshToken (sin googleapis)
+  private async getAccessToken(): Promise<string> {
+    const url = 'https://oauth2.googleapis.com/token';
 
-    if (!CLIENT_ID || !CLIENT_SECRET || !REFRESH_TOKEN || !USER_EMAIL) {
-      throw new Error(
-        'Gmail OAuth2 configuration is missing. Please set CLIENT_ID, CLIENT_SECRET, REFRESH_TOKEN, SMTP_USER',
-      );
-    }
-
-    const oAuth2Client = new google.auth.OAuth2(
-      CLIENT_ID,
-      CLIENT_SECRET,
-      REDIRECT_URI,
-    );
-
-    oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
-
-    // ✅ Aquí resolvemos el token ANTES de crear el transporter
-    const accessTokenObj = await oAuth2Client.getAccessToken();
-    const accessToken = accessTokenObj?.token;
-
-    if (!accessToken) {
-      throw new Error('No se pudo obtener el access token de Gmail OAuth2');
-    }
-
-    this.transporter = nodemailer.createTransport(<SMTPTransport.Options>{
-      host: process.env.SMTP_HOST || 'smtp.gmail.com',
-      port: Number(process.env.SMTP_PORT) || 465,
-      secure: true, // true para 465, false para 587
-      auth: {
-        type: 'OAuth2',
-        user: USER_EMAIL,
-        clientId: CLIENT_ID,
-        clientSecret: CLIENT_SECRET,
-        refreshToken: REFRESH_TOKEN,
-        accessToken, // ✅ ahora es string, no Promise
-      },
-    });
-  }
-
-  async sendEmail(to: string, subject: string, body: string): Promise<void> {
-    if (!this.transporter) {
-      throw new InternalServerErrorException('Transporter not initialized');
-    }
+    const body = {
+      client_id: this.clientId,
+      client_secret: this.clientSecret,
+      refresh_token: this.refreshToken,
+      grant_type: 'refresh_token',
+    };
 
     try {
-      await this.transporter.sendMail({
-        from: `"Notificaciones" <${process.env.SMTP_USER}>`,
-        to,
-        subject,
-        html: body,
+      const res = await axios.post(url, qs.stringify(body), {
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       });
 
+      return res.data.access_token;
+    } catch (err) {
+      console.error('❌ Error obteniendo access token:', err.response?.data || err.message);
+      throw new InternalServerErrorException('No se pudo obtener access token');
+    }
+  }
+
+  // 📧 Paso 2: crear correo MIME (RFC 2822) y codificarlo en base64url
+  private buildRawMessage(to: string, subject: string, body: string): string {
+    const message = [
+      `From: ${this.userEmail}`,
+      `To: ${to}`,
+      `Subject: ${subject}`,
+      'Content-Type: text/html; charset=UTF-8',
+      '',
+      body,
+    ].join('\n');
+
+    // base64url (sin padding =, sin +, sin /)
+    return Buffer.from(message)
+      .toString('base64')
+      .replace(/\+/g, '-')
+      .replace(/\//g, '_')
+      .replace(/=+$/, '');
+  }
+
+  // 🚀 Paso 3: enviar correo a la API de Gmail
+  async sendEmail(to: string, subject: string, body: string): Promise<void> {
+    const accessToken = await this.getAccessToken();
+    const raw = this.buildRawMessage(to, subject, body);
+
+    try {
+      await axios.post(
+        'https://gmail.googleapis.com/gmail/v1/users/me/messages/send',
+        { raw },
+        { headers: { Authorization: `Bearer ${accessToken}` } },
+      );
+
       console.log(`✅ Email enviado a ${to} con subject "${subject}"`);
-    } catch (error) {
-      console.error('❌ Error enviando email:', error);
+    } catch (err) {
+      console.error('❌ Error enviando email:', err.response?.data || err.message);
       throw new InternalServerErrorException('Error enviando email');
     }
   }
