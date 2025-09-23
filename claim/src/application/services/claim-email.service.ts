@@ -77,19 +77,19 @@ export class ClaimEmailService {
         <body>
   <h2>Se ha registrado un nuevo incidente</h2>
   <p><strong>Código de seguimiento:</strong> ${trackingCode}</p>
-  <p><strong>Fecha de registro:</strong> ${
+  <p><strong>Fecha de Reclamo o Queja:</strong> ${
     requestDate || submissionDate
   }</p>
 
   <div class="section-title">Detalles del reclamo</div>
   <table>
-    <tr><th>Número de documento</th><td>${dto.documentNumber || 'N/A'}</td></tr>
     <tr><th>Número de pedido</th><td>${dto.orderNumber || 'N/A'}</td></tr>
     <tr><th>Pedido del cliente</th><td>${dto.customerOrder || 'N/A'}</td></tr>
   </table>
 
   <div class="section-title">Detalles del cliente</div>
   <table>
+    <tr><th>Número de documento</th><td>${dto.documentNumber || 'N/A'}</td></tr>
     <tr><th>Nombre</th><td>${dto.firstName} ${dto.lastName}</td></tr>
     <tr><th>Correo electrónico</th><td>${dto.email}</td></tr>
     <tr><th>Teléfono</th><td>${dto.phone || 'N/A'}</td></tr>
