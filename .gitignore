@@ -16,3 +16,4 @@ claim/node_modules
 api/design/node_modules
 
 deploys_front/
+claim/.env
