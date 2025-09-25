@@ -96,6 +96,11 @@ Los componentes se gestionan con **Terraform** y se integran con un dominio exte
   ```bash
   nslookup forms.empresa.com
 
+---
+
+### ❌ No se refleja cambios en el frontend
+- Para actualizar el cache de cloudfront puedes hacerlo directamente desde el servicio o por consola usando el aws cli.
+`aws cloudfront create-invalidation --distribution-id E9Y3MARBGX7W9 --paths "/*"`
 
 ## 🚦 Flujo de despliegue completo
 
